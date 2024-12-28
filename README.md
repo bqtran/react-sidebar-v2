@@ -110,16 +110,16 @@ Note: Due to MapLibre's class component architecture, the `Map` component needs 
 ## API
 ### [ReactLeafletSidebar / MapLibreSidebar] Component Properties
 - `position`: _String_ - Sidebar control placement
-    - React-Leaflet Values: 'topleft', 'topright'
-    - MapLibre GL JS Values: 'top-left', 'top-right'
+  - React-Leaflet Values: 'topleft', 'topright'
+  - MapLibre GL JS Values: 'top-left', 'top-right'
 - `autopan`: _Boolean_ - Pan map on Sidebar expand/collapse
 - `tabs`: Tab[]- Array of Sidebar tabs
-    - `id`: _String_ - tab unique identifier
-    - `title`: _String/Component_ - tab header text or component
-    - `icon`: _String_ - icon name from [Lucide Icon](https://lucide.dev/) collection
-    - `position`: _String_ - fix tab icon to 'top' or 'bottom'. Values: 'top', 'bottom'
-    - `disabled`: _Boolean_ - disable/enable sidebar tab
-    - `children`: _String/Component_ - Sidebar tab content
+  - `id`: _String_ - tab unique identifier
+  - `title`: _String/Component_ - tab header text or component
+  - `icon`: _String_ - icon name from [Lucide Icon](https://lucide.dev/) collection
+  - `position`: _String_ - fix tab icon to 'top' or 'bottom'. Values: 'top', 'bottom'
+  - `disabled`: _Boolean_ - disable/enable sidebar tab
+  - `children`: _String/Component_ - Sidebar tab content
 
 ### [ReactLeafletSidebar / MapLibreSidebar] Events
 - `"closing"` : (_tab_id_) - close tab event triggered
