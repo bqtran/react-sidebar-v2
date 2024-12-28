@@ -6,6 +6,7 @@ npm-debug.log*
 node_modules
 dist
 *.local
+.secrets
 
 # Editor directories and files
 .vscode/*
