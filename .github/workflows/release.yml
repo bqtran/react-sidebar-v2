@@ -44,3 +44,4 @@ jobs:
           npm-tag: ${{ github.event.inputs.tag }}
           npm-token: ${{secrets.NPM_TOKEN}}
           provenance: true
+          access: public
