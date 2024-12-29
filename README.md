@@ -1,5 +1,8 @@
 # React-Sidebar-v2
-[![Super-Linter](https://github.com/bqtran/react-sidebar-v2/actions/workflows/super-linter.yml/badge.svg)](https://github.com/marketplace/actions/super-linter)
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/bqtran/react-sidebar-v2/super-linter.yml?style=flat-square)
+![GitHub License](https://img.shields.io/github/license/bqtran/react-sidebar-v2?style=flat-square)
+![NPM Version](https://img.shields.io/npm/v/%40bqtran%2Freact-sidebar-v2?style=flat-square)
+![GitHub Release Date](https://img.shields.io/github/release-date/bqtran/react-sidebar-v2?style=flat-square)
 
 This is a React friendly port of [Turbo87's sidebar-v2](https://github.com/Turbo87/sidebar-v2) map control for React-Leaflet & MapLibre GL JS.
 

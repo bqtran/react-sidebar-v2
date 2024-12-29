@@ -20,6 +20,17 @@
     "type": "git",
     "url": "git+https://github.com/bqtran/react-sidebar-v2.git"
   },
+  "keywords": [
+    "react",
+    "leaflet",
+    "sidebar",
+    "sidebar-v2",
+    "react-leaflet",
+    "react-leaflet-v4",
+    "maplibre",
+    "maplibre-gl",
+    "maplibre-gl-js"
+  ],
   "sideEffects": [
     "**/*.css"
   ],
