@@ -45,3 +45,5 @@ jobs:
           npm-token: ${{secrets.NPM_TOKEN}}
           provenance: true
           access: public
+          build-command: |
+            npm ci
