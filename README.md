@@ -12,8 +12,8 @@ You can read his excellent overview article [here](https://dev.to/receter/how-to
 - Recreates all the original sidebar-v2 functionality (markup, events) in React (leverages the original CSS only)
 - Includes the nifty map autopan functionality found in [Norwin's leaflet-sidebar-v2](https://github.com/noerw/leaflet-sidebar-v2).
 - Includes both components for [React-Leaflet](https://react-leaflet.js.org/) and [MapLibre GL JS](https://maplibre.org/) libraries.
-- TypeScript declarations provided
-- MIT license
+- Native [Lucide Icons](https://lucide.dev/) Integration
+- TypeScript declarations
 ### React-Leaflet Example
 ```javascript
 import "leaflet/dist/leaflet.css"
@@ -112,7 +112,7 @@ export default function MapLibre() {
 }
 
 ```
-Note: Due to MapLibre's class component architecture, the `Map` component needs exist/be passed to `MapLibreSidebar`, and position values follow MapLibre's naming convention ('top-left' for Left, 'top-right' for Right).
+Note: Due to MapLibre's class component architecture, the `Map` component needs to exist/be passed to `MapLibreSidebar`, and position values follow MapLibre's naming convention ('top-left' for Left, 'top-right' for Right).
 ## API
 ### [ReactLeafletSidebar / MapLibreSidebar] Component Properties
 - `sbRef`: _React.Ref_ - Sidebar Reference (for title/content component reference)
@@ -126,9 +126,12 @@ Note: Due to MapLibre's class component architecture, the `Map` component needs 
   - `icon`: _String_ - icon name from [Lucide Icon](https://lucide.dev/) collection
   - `position`: _String_ - fix tab icon to 'top' or 'bottom'. Values: 'top', 'bottom'
   - `disabled`: _Boolean_ - disable/enable sidebar tab
-  - `content`: _String/Component_ - Sidebar tab content
+  - `content`: _String/Component_ - tab content
 
 ### [ReactLeafletSidebar / MapLibreSidebar] Events
 - `"closing"` : (_tab_id_) - close tab event triggered
 - `"opening"` : (_tab_id_) - open tab event triggered
 - `"content"` : (_tab_id_) - content event triggered
+
+## Attributions
+[Lucide](https://lucide.dev/) - [ISC License](https://lucide.dev/license)
