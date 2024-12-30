@@ -1,8 +1,10 @@
 import "leaflet/dist/leaflet.css"
 import {ReactLeafletSidebar} from "../";
 import {MapContainer, TileLayer, ZoomControl} from 'react-leaflet'
+import {useRef} from "react";
 
 export default function LeafletMap() {
+  const sbRef = useRef<HTMLDivElement>(null);
 
   return <div className="flex h-screen w-screen">
     <div className="flex-1">
@@ -11,14 +13,14 @@ export default function LeafletMap() {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-          <ReactLeafletSidebar position="topleft" autopan={true} tabs={[
+          <ReactLeafletSidebar ref={sbRef} position="topleft" autopan={true} tabs={[
             {
               id: "menu",
               title:"Menu",
               icon:"Menu",
               position:"top",
               disabled:false,
-              children:<p>Menu Content</p>
+              content:<p>Menu Content</p>
             },
             {
               id:"profile",
@@ -26,7 +28,7 @@ export default function LeafletMap() {
               icon:"User",
               position:"top",
               disabled:false,
-              children:<p>Profile Content</p>
+              content:<p>Profile Content</p>
             },
             {
               id:"mail",
@@ -34,7 +36,7 @@ export default function LeafletMap() {
               icon:"Mail",
               position:"top",
               disabled:false,
-              children:<p>Mail Content</p>
+              content:<p>Mail Content</p>
             },
             {
               id:"settings",
@@ -42,7 +44,7 @@ export default function LeafletMap() {
               icon:"Settings",
               position:"bottom",
               disabled:false,
-              children:<p>Settings Content</p>
+              content:<p>Settings Content</p>
             }
           ]}/>
       <ZoomControl position="topright"/>

@@ -20,8 +20,10 @@ import "leaflet/dist/leaflet.css"
 import "./LeafletMap.css"
 import {ReactLeafletSidebar} from "@bqtran/react-sidebar-v2";
 import {MapContainer, TileLayer} from 'react-leaflet'
+import {useRef} from "react";
 
 export default function LeafletMap() {
+  const sbRef = useRef<HTMLDivElement>(null);
   return <div className="flex h-screen w-screen">
     <div className="flex-1">
       <MapContainer center={[29.648, -95.579]} zoom={13} scrollWheelZoom={false} zoomControl={false}>
@@ -29,14 +31,14 @@ export default function LeafletMap() {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        <ReactLeafletSidebar position="topleft" autopan={true} tabs={[
+        <ReactLeafletSidebar ref={sbRef} position="topleft" autopan={true} tabs={[
           {
             id: "menu",
             title:"Menu",
             icon:"Menu",
             position:"top",
             disabled:false,
-            children:<p>Menu Content</p>
+            content:<p>Menu Content</p>
           },
           {
             id:"settings",
@@ -44,7 +46,7 @@ export default function LeafletMap() {
             icon:"Settings",
             position:"bottom",
             disabled:false,
-            children:<p>Settings Content</p>
+            content:<p>Settings Content</p>
           }
         ]}/>
       </MapContainer>
@@ -60,10 +62,11 @@ Note: `ReactLeafletSidebar` needs to be a child component of `MapContainer`, and
 import {MapLibreSidebar} from "@bqtran/react-sidebar-v2";
 import maplibre from "maplibre-gl"
 import "maplibre-gl/dist/maplibre-gl.css"
-import {useEffect, useState} from "react"
+import {useEffect, useState, useRef} from "react"
 
 export default function MapLibre() {
   const [map, setMap] = useState<maplibre.Map>();
+  const sbRef = useRef<HTMLDivElement>(null);
   const navCtrl = new maplibre.NavigationControl();
 
   useEffect(() => {
@@ -85,14 +88,14 @@ export default function MapLibre() {
   return  <div className="flex h-screen w-screen">
             <div className="flex-1">
               <div id="map" style={{width: "100%", height: "100%"}}/>
-              {map && <MapLibreSidebar map={map} position="top-left" autopan={false} tabs={[
+              {map && <MapLibreSidebar ref={sbRef} map={map} position="top-left" autopan={false} tabs={[
                   {
                     id: "menu",
                     title: "Menu",
                     icon: "Menu",
                     position: "top",
                     disabled: false,
-                    children: <p>Menu Content</p>
+                    content: <p>Menu Content</p>
                   },
                   {
                     id: "settings",
@@ -100,7 +103,7 @@ export default function MapLibre() {
                     icon: "Settings",
                     position: "bottom",
                     disabled: false,
-                    children: <p>Settings Content</p>
+                    content: <p>Settings Content</p>
                   }
                 ]} />
               }
@@ -112,6 +115,7 @@ export default function MapLibre() {
 Note: Due to MapLibre's class component architecture, the `Map` component needs exist/be passed to `MapLibreSidebar`, and position values follow MapLibre's naming convention ('top-left' for Left, 'top-right' for Right).
 ## API
 ### [ReactLeafletSidebar / MapLibreSidebar] Component Properties
+- `ref`: _React.Ref_ - Sidebar Reference (for title/content component reference)
 - `position`: _String_ - Sidebar control placement
   - React-Leaflet Values: 'topleft', 'topright'
   - MapLibre GL JS Values: 'top-left', 'top-right'
@@ -122,7 +126,7 @@ Note: Due to MapLibre's class component architecture, the `Map` component needs 
   - `icon`: _String_ - icon name from [Lucide Icon](https://lucide.dev/) collection
   - `position`: _String_ - fix tab icon to 'top' or 'bottom'. Values: 'top', 'bottom'
   - `disabled`: _Boolean_ - disable/enable sidebar tab
-  - `children`: _String/Component_ - Sidebar tab content
+  - `content`: _String/Component_ - Sidebar tab content
 
 ### [ReactLeafletSidebar / MapLibreSidebar] Events
 - `"closing"` : (_tab_id_) - close tab event triggered

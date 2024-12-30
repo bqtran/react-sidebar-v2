@@ -1,10 +1,11 @@
 import "maplibre-gl/dist/maplibre-gl.css"
 import maplibre from "maplibre-gl"
 import {MapLibreSidebar} from "../";
-import {useEffect, useState} from "react"
+import {useEffect, useState, useRef} from "react"
 
 export default function MapLibre() {
   const [map, setMap] = useState<maplibre.Map>();
+  const sbRef = useRef<HTMLDivElement>(null);
   const navCtrl = new maplibre.NavigationControl();
 
   useEffect(() => {
@@ -26,14 +27,14 @@ export default function MapLibre() {
   return  <div className="flex h-screen w-screen">
             <div className="flex-1">
               <div id="map" style={{width: "100%", height: "100%"}}/>
-              {map && <MapLibreSidebar map={map} position="top-left" autopan={true} tabs={[
+              {map && <MapLibreSidebar ref={sbRef} map={map} position="top-left" autopan={true} tabs={[
                   {
                     id: "menu",
                     title: "Menu",
                     icon: "Menu",
                     position: "top",
                     disabled: false,
-                    children: <p>Menu Content</p>
+                    content: <p>Menu Content</p>
                   },
                   {
                     id: "profile",
@@ -41,7 +42,7 @@ export default function MapLibre() {
                     icon: "User",
                     position: "top",
                     disabled: false,
-                    children: <p>Profile Content</p>
+                    content: <p>Profile Content</p>
                   },
                   {
                     id: "mail",
@@ -49,7 +50,7 @@ export default function MapLibre() {
                     icon: "Mail",
                     position: "top",
                     disabled: false,
-                    children: <p>Mail Content</p>
+                    content: <p>Mail Content</p>
                   },
                   {
                     id: "settings",
@@ -57,7 +58,7 @@ export default function MapLibre() {
                     icon: "Settings",
                     position: "bottom",
                     disabled: false,
-                    children: <p>Settings Content</p>
+                    content: <p>Settings Content</p>
                   }
                 ]} />
               }

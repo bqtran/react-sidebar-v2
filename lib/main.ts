@@ -7,7 +7,7 @@ export type TabType = {
   disabled: boolean;
   icon: keyof typeof icons;
   position: 'top'|'bottom';
-  children?: ReactNode;
+  content?: ReactNode;
 }
 
 export {ReactLeafletSidebar} from './components/ReactLeafletSidebar/ReactLeafletSidebar'

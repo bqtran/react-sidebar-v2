@@ -1,5 +1,5 @@
 import 'sidebar-v2/css/leaflet-sidebar.css'
-import React, {useRef, useState, useEffect} from "react";
+import React, {useState, useEffect, RefObject} from "react";
 import L from "leaflet";
 import {useMap} from "react-leaflet";
 import Icon from "../Icon";
@@ -7,14 +7,14 @@ import {TabType} from "../../main.ts";
 import './ReactLeafletSidebar.css'
 
 export interface ReactLeafletSidebarOptions {
+  ref: RefObject<HTMLDivElement>;
   position: "topleft" | "topright";
   autopan: boolean;
   tabs: TabType[];
 }
 
-export const ReactLeafletSidebar = ({position, autopan, tabs}: ReactLeafletSidebarOptions) => {
+export const ReactLeafletSidebar = ({ref, position, autopan, tabs}: ReactLeafletSidebarOptions) => {
   const [activeTab, setActiveTab] = useState<string>('');
-  const sbRef = useRef<HTMLDivElement>(null);
   const [collapsed, setCollapsed] = useState(true);
   const positionClass = position == "topright" ? 'leaflet-top leaflet-right' : 'leaflet-top leaflet-left';
   const positionLR = ["topleft"].includes(position) ? "left" : "right";
@@ -22,9 +22,9 @@ export const ReactLeafletSidebar = ({position, autopan, tabs}: ReactLeafletSideb
 
   const panMap = (enable:boolean) => {
     if(enable) {
-      if(sbRef.current != null) {
+      if(ref.current != null) {
         //@ts-ignore
-        let panWidth = Number.parseInt(L.DomUtil.getStyle(sbRef.current, "max-width")) / 2;
+        let panWidth = Number.parseInt(L.DomUtil.getStyle(ref.current, "max-width")) / 2;
         if(!isNaN(panWidth)) {
           if (positionLR == "left" && collapsed || positionLR == "right" && !collapsed) panWidth *= -1;
           map.panBy([panWidth, 0], {duration: 0.5});
@@ -57,26 +57,26 @@ export const ReactLeafletSidebar = ({position, autopan, tabs}: ReactLeafletSideb
 
   //append to leaflet control container
   useEffect(() => {
-    if(sbRef.current !== null) {
+    if(ref.current !== null) {
       const div = document.getElementsByClassName(positionClass)[0];
-      div.append(sbRef.current);
+      div.append(ref.current);
     }
   }, [positionClass]);
 
   //prevent map clicks
   useEffect(() => {
-    if (sbRef.current !== null) {
-      L.DomEvent.disableClickPropagation(sbRef.current)
-      L.DomEvent.disableScrollPropagation(sbRef.current)
+    if (ref.current !== null) {
+      L.DomEvent.disableClickPropagation(ref.current)
+      L.DomEvent.disableScrollPropagation(ref.current)
     }
-  }, [sbRef])
+  }, [ref])
 
-  return <div ref={sbRef} className={`sidebar leaflet-control sidebar-${positionLR} leaflet-touch ${collapsed ? 'collapsed': ''}`}>
+  return <div ref={ref} className={`sidebar leaflet-control sidebar-${positionLR} leaflet-touch ${collapsed ? 'collapsed': ''}`}>
     <div className="sidebar-content bg-slate-100">
       {tabs.map(t => {
         return <div key={t.id} id={t.id} className={`sidebar-pane ${activeTab == t.id ? 'active' : ''}`}>
           <h1 className="sidebar-header">{t.title}</h1>
-          {t.children}
+          {t.content}
           <span className="sidebar-close" onClick={closeTab}>
             {positionLR == "left" && <Icon name="CircleChevronLeft"  size={20} style={{margin:10}} color={"white"}/>}
             {positionLR == "right" && <Icon name="CircleChevronRight" size={20} style={{margin: 10}} color={"white"}/>}
