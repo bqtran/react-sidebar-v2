@@ -7,14 +7,12 @@
     "moduleResolution": "bundler",
     "allowSyntheticDefaultImports": true,
     "noEmit": true,
-
-    /* Linting */
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
   },
-  "include": ["vite.config.ts"],
-  "extends": ["./tsconfig.json"]
+  "extends": ["./tsconfig.json"],
+  "include": ["vite.config.ts"]
 }
