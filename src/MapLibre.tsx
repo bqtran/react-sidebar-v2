@@ -27,7 +27,7 @@ export default function MapLibre() {
   return  <div className="flex h-screen w-screen">
             <div className="flex-1">
               <div id="map" style={{width: "100%", height: "100%"}}/>
-              {map && <MapLibreSidebar ref={sbRef} map={map} position="top-left" autopan={true} tabs={[
+              {map && <MapLibreSidebar sbRef={sbRef} map={map} position="top-left" autopan={true} tabs={[
                   {
                     id: "menu",
                     title: "Menu",

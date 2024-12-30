@@ -7,14 +7,14 @@ import Icon from "../Icon";
 import './MapLibreSidebar.css'
 
 export interface MapLibreSidebarOptions {
-  ref: RefObject<HTMLDivElement>;
+  sbRef: RefObject<HTMLDivElement>;
   map: Map;
   position: "top-left" | "top-right";
   autopan: boolean;
   tabs: TabType[];
 }
 
-export const MapLibreSidebar = ({ref, map, position, autopan, tabs}: MapLibreSidebarOptions) => {
+export const MapLibreSidebar = ({sbRef, map, position, autopan, tabs}: MapLibreSidebarOptions) => {
   const [activeTab, setActiveTab] = useState<string>('');
   const [collapsed, setCollapsed] = useState(true);
   const positionClass = position == "top-right" ? 'maplibregl-ctrl-top-right' : 'maplibregl-ctrl-top-left';
@@ -23,9 +23,9 @@ export const MapLibreSidebar = ({ref, map, position, autopan, tabs}: MapLibreSid
 
   const panMap = (enable:boolean) => {
     if(enable) {
-      if(ref.current != null) {
+      if(sbRef.current != null) {
         //@ts-ignore
-        let panWidth = Number.parseInt(L.DomUtil.getStyle(ref.current, "max-width")) / 2;
+        let panWidth = Number.parseInt(L.DomUtil.getStyle(sbRef.current, "max-width")) / 2;
         if(!isNaN(panWidth)) {
           if (positionLR == "left" && collapsed || positionLR == "right" && !collapsed) panWidth *= -1;
           mapRef.current.panBy([panWidth, 0], {duration: 500});
@@ -56,22 +56,22 @@ export const MapLibreSidebar = ({ref, map, position, autopan, tabs}: MapLibreSid
   }
   //append to maplibre control container
   useEffect(() => {
-    if(ref.current !== null) {
+    if(sbRef.current !== null) {
       const div = document.getElementsByClassName(positionClass)[0] as HTMLElement;
       div.style.zIndex = '3'; //bugfix for maplibre control race condition affecting responsiveness
-      div.append(ref.current);
+      div.append(sbRef.current);
     }
   }, [positionClass]);
 
   //prevent map clicks
   useEffect(() => {
-    if (ref.current !== null) {
-      L.DomEvent.disableClickPropagation(ref.current)
-      L.DomEvent.disableScrollPropagation(ref.current)
+    if (sbRef.current !== null) {
+      L.DomEvent.disableClickPropagation(sbRef.current)
+      L.DomEvent.disableScrollPropagation(sbRef.current)
     }
-  }, [ref]);
+  }, [sbRef]);
 
-  return <div ref={ref} className={`sidebar sidebar-${positionLR} ${collapsed ? 'collapsed': ''}`}>
+  return <div ref={sbRef} className={`sidebar sidebar-${positionLR} ${collapsed ? 'collapsed': ''}`}>
     <div className="sidebar-content bg-slate-100">
       {tabs.map(t => {
         return <div key={t.id} id={t.id} className={`sidebar-pane ${activeTab == t.id ? 'active' : ''}`}>

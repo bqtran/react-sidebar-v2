@@ -7,13 +7,13 @@ import {TabType} from "../../main.ts";
 import './ReactLeafletSidebar.css'
 
 export interface ReactLeafletSidebarOptions {
-  ref: RefObject<HTMLDivElement>;
+  sbRef: RefObject<HTMLDivElement>;
   position: "topleft" | "topright";
   autopan: boolean;
   tabs: TabType[];
 }
 
-export const ReactLeafletSidebar = ({ref, position, autopan, tabs}: ReactLeafletSidebarOptions) => {
+export const ReactLeafletSidebar = ({sbRef, position, autopan, tabs}: ReactLeafletSidebarOptions) => {
   const [activeTab, setActiveTab] = useState<string>('');
   const [collapsed, setCollapsed] = useState(true);
   const positionClass = position == "topright" ? 'leaflet-top leaflet-right' : 'leaflet-top leaflet-left';
@@ -22,9 +22,9 @@ export const ReactLeafletSidebar = ({ref, position, autopan, tabs}: ReactLeaflet
 
   const panMap = (enable:boolean) => {
     if(enable) {
-      if(ref.current != null) {
+      if(sbRef.current != null) {
         //@ts-ignore
-        let panWidth = Number.parseInt(L.DomUtil.getStyle(ref.current, "max-width")) / 2;
+        let panWidth = Number.parseInt(L.DomUtil.getStyle(sbRef.current, "max-width")) / 2;
         if(!isNaN(panWidth)) {
           if (positionLR == "left" && collapsed || positionLR == "right" && !collapsed) panWidth *= -1;
           map.panBy([panWidth, 0], {duration: 0.5});
@@ -57,21 +57,21 @@ export const ReactLeafletSidebar = ({ref, position, autopan, tabs}: ReactLeaflet
 
   //append to leaflet control container
   useEffect(() => {
-    if(ref.current !== null) {
+    if(sbRef.current !== null) {
       const div = document.getElementsByClassName(positionClass)[0];
-      div.append(ref.current);
+      div.append(sbRef.current);
     }
   }, [positionClass]);
 
   //prevent map clicks
   useEffect(() => {
-    if (ref.current !== null) {
-      L.DomEvent.disableClickPropagation(ref.current)
-      L.DomEvent.disableScrollPropagation(ref.current)
+    if (sbRef.current !== null) {
+      L.DomEvent.disableClickPropagation(sbRef.current)
+      L.DomEvent.disableScrollPropagation(sbRef.current)
     }
-  }, [ref])
+  }, [sbRef])
 
-  return <div ref={ref} className={`sidebar leaflet-control sidebar-${positionLR} leaflet-touch ${collapsed ? 'collapsed': ''}`}>
+  return <div ref={sbRef} className={`sidebar leaflet-control sidebar-${positionLR} leaflet-touch ${collapsed ? 'collapsed': ''}`}>
     <div className="sidebar-content bg-slate-100">
       {tabs.map(t => {
         return <div key={t.id} id={t.id} className={`sidebar-pane ${activeTab == t.id ? 'active' : ''}`}>

@@ -31,7 +31,7 @@ export default function LeafletMap() {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        <ReactLeafletSidebar ref={sbRef} position="topleft" autopan={true} tabs={[
+        <ReactLeafletSidebar sbRef={sbRef} position="topleft" autopan={true} tabs={[
           {
             id: "menu",
             title:"Menu",
@@ -88,7 +88,7 @@ export default function MapLibre() {
   return  <div className="flex h-screen w-screen">
             <div className="flex-1">
               <div id="map" style={{width: "100%", height: "100%"}}/>
-              {map && <MapLibreSidebar ref={sbRef} map={map} position="top-left" autopan={false} tabs={[
+              {map && <MapLibreSidebar sbRef={sbRef} map={map} position="top-left" autopan={false} tabs={[
                   {
                     id: "menu",
                     title: "Menu",
@@ -115,7 +115,7 @@ export default function MapLibre() {
 Note: Due to MapLibre's class component architecture, the `Map` component needs exist/be passed to `MapLibreSidebar`, and position values follow MapLibre's naming convention ('top-left' for Left, 'top-right' for Right).
 ## API
 ### [ReactLeafletSidebar / MapLibreSidebar] Component Properties
-- `ref`: _React.Ref_ - Sidebar Reference (for title/content component reference)
+- `sbRef`: _React.Ref_ - Sidebar Reference (for title/content component reference)
 - `position`: _String_ - Sidebar control placement
   - React-Leaflet Values: 'topleft', 'topright'
   - MapLibre GL JS Values: 'top-left', 'top-right'

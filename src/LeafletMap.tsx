@@ -13,7 +13,7 @@ export default function LeafletMap() {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-          <ReactLeafletSidebar ref={sbRef} position="topleft" autopan={true} tabs={[
+          <ReactLeafletSidebar sbRef={sbRef} position="topleft" autopan={true} tabs={[
             {
               id: "menu",
               title:"Menu",
