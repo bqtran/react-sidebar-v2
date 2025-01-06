@@ -13,11 +13,11 @@ You can read his excellent overview article [here](https://dev.to/receter/how-to
 - Includes the nifty map autopan functionality found in [Norwin's leaflet-sidebar-v2](https://github.com/noerw/leaflet-sidebar-v2).
 - Includes both components for [React-Leaflet](https://react-leaflet.js.org/) and [MapLibre GL JS](https://maplibre.org/) libraries.
 - Native [Lucide Icons](https://lucide.dev/) Integration
+- Tailwind CSS Styling
 - TypeScript declarations
 ### React-Leaflet Example
 ```javascript
 import "leaflet/dist/leaflet.css"
-import "./LeafletMap.css"
 import {ReactLeafletSidebar} from "@bqtran/react-sidebar-v2";
 import {MapContainer, TileLayer} from 'react-leaflet'
 import {useRef} from "react";
@@ -55,7 +55,7 @@ export default function LeafletMap() {
 }
 
 ```
-Note: `ReactLeafletSidebar` needs to be a child component of `MapContainer`, and position values follow the React-Leaflet's naming convention ('topleft' for Left, 'topright' for Right).
+Note: `ReactLeafletSidebar` needs to be a child component of `MapContainer` for React-Leaflet's contexts to work properly.
 ### MapLibre GL JS Example
 
 ```javascript
@@ -67,7 +67,6 @@ import {useEffect, useState, useRef} from "react"
 export default function MapLibre() {
   const [map, setMap] = useState<maplibre.Map>();
   const sbRef = useRef<HTMLDivElement>(null);
-  const navCtrl = new maplibre.NavigationControl();
 
   useEffect(() => {
     if(map == undefined) {
@@ -78,12 +77,6 @@ export default function MapLibre() {
       }));
     }
   }, []);
-
-  useEffect(() => {
-    if(map && !map.hasControl(navCtrl)) {
-      map.addControl(navCtrl, 'top-right');
-    }
-  }, [map]);
 
   return  <div className="flex h-screen w-screen">
             <div className="flex-1">
@@ -112,16 +105,21 @@ export default function MapLibre() {
 }
 
 ```
-Note: Due to MapLibre's class component architecture, the `Map` component needs to exist/be passed to `MapLibreSidebar`, and position values follow MapLibre's naming convention ('top-left' for Left, 'top-right' for Right).
+Note: The `Map` component needs to exist before it can be passed to `MapLibreSidebar`, so useState is used for this purpose.
 ## API
 ### [ReactLeafletSidebar / MapLibreSidebar] Component Properties
 - `sbRef`: _React.Ref_ - Sidebar Reference (for title/content component reference)
+- `className`: _String_ (Optional) - Sidebar container styling
+- `tabsClassName`: _String_ (Optional) - Sidebar tab container styling
+- `contentsClassName`: _String_ (Optional) - Sidebar tab content container styling
 - `position`: _String_ - Sidebar control placement
   - React-Leaflet Values: 'topleft', 'topright'
   - MapLibre GL JS Values: 'top-left', 'top-right'
 - `autopan`: _Boolean_ - Pan map on Sidebar expand/collapse
 - `tabs`: Tab[]- Array of Sidebar tabs
   - `id`: _String_ - tab unique identifier
+  - `tabClassName`: _String_ (Optional) - individual tab styling
+  - `contentClassName`: _String_ (Optional) - individual tab content styling
   - `title`: _String/Component_ - tab header text or component
   - `icon`: _String_ - icon name from [Lucide Icon](https://lucide.dev/) collection
   - `position`: _String_ - fix tab icon to 'top' or 'bottom'. Values: 'top', 'bottom'
@@ -135,3 +133,9 @@ Note: Due to MapLibre's class component architecture, the `Map` component needs 
 
 ## Attributions
 [Lucide](https://lucide.dev/) - [ISC License](https://lucide.dev/license)
+
+[Tailwind CSS](https://tailwindcss.com/) - [MIT License](https://github.com/tailwindlabs/tailwindcss/blob/next/LICENSE)
+
+[React-Leaflet](https://react-leaflet.js.org/) - [Hippocratic License](https://github.com/PaulLeCam/react-leaflet/blob/master/LICENSE.md)
+
+[MapLibre](https://maplibre.org/) - [3-Clause BSD license](https://github.com/maplibre/maplibre-gl-js/blob/main/LICENSE.txt)

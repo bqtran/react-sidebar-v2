@@ -4,6 +4,8 @@ import {icons} from "lucide-react";
 export type TabType = {
   id: string;
   title: ReactNode | string;
+  tabClassName?: string;
+  contentClassName?: string;
   disabled: boolean;
   icon: keyof typeof icons;
   position: 'top'|'bottom';

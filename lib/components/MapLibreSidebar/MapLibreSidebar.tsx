@@ -2,19 +2,23 @@ import 'sidebar-v2/css/leaflet-sidebar.css'
 import {Map} from "maplibre-gl";
 import {TabType} from "../../main.ts";
 import React, {useEffect, useRef, useState, RefObject} from "react";
+import {clsx} from "clsx";
 import L from "leaflet";
 import Icon from "../Icon";
 import './MapLibreSidebar.css'
 
 export interface MapLibreSidebarOptions {
   sbRef: RefObject<HTMLDivElement>;
+  className?: string;
+  tabsClassName?: string;
+  contentsClassName?: string;
   map: Map;
   position: "top-left" | "top-right";
   autopan: boolean;
   tabs: TabType[];
 }
 
-export const MapLibreSidebar = ({sbRef, map, position, autopan, tabs}: MapLibreSidebarOptions) => {
+export const MapLibreSidebar = ({sbRef, className, tabsClassName, contentsClassName, map, position, autopan, tabs}: MapLibreSidebarOptions) => {
   const [activeTab, setActiveTab] = useState<string>('');
   const [collapsed, setCollapsed] = useState(true);
   const positionClass = position == "top-right" ? 'maplibregl-ctrl-top-right' : 'maplibregl-ctrl-top-left';
@@ -71,10 +75,10 @@ export const MapLibreSidebar = ({sbRef, map, position, autopan, tabs}: MapLibreS
     }
   }, [sbRef]);
 
-  return <div ref={sbRef} className={`sidebar sidebar-${positionLR} ${collapsed ? 'collapsed': ''}`}>
-    <div className="sidebar-content bg-slate-100">
+  return <div ref={sbRef} className={clsx(`sidebar sidebar-${positionLR} ${collapsed ? 'collapsed': ''}`, className)}>
+    <div className={clsx("sidebar-content bg-slate-100", contentsClassName)}>
       {tabs.map(t => {
-        return <div key={t.id} id={t.id} className={`sidebar-pane ${activeTab == t.id ? 'active' : ''}`}>
+        return <div key={t.id} id={t.id} className={clsx(`sidebar-pane ${activeTab == t.id ? 'active' : ''}`, t.contentClassName)}>
           <h1 className="sidebar-header">{t.title}</h1>
           {t.content}
           <span className="sidebar-close" onClick={closeTab}>
@@ -84,10 +88,10 @@ export const MapLibreSidebar = ({sbRef, map, position, autopan, tabs}: MapLibreS
         </div>
       })}
     </div>
-    <div className="sidebar-tabs" role="tablist">
+    <div className={clsx("sidebar-tabs", tabsClassName)} role="tablist">
       <ul className="">
         {tabs.filter(f=>f.position=='top').map(t=> {
-          return <li key={t.id} className={`${activeTab == t.id ? 'active' : ''} ${t.disabled ? 'disabled' : ''}`} title={typeof t.title == 'string'? t.title: ''}>
+          return <li key={t.id} className={clsx(`${activeTab == t.id ? 'active' : ''} ${t.disabled ? 'disabled' : ''}`, t.tabClassName)} title={typeof t.title == 'string'? t.title: ''}>
             <a className="" href={`#${t.id}`} role="tab" onClick={openTab}>
               <Icon name={t.icon} size={20} style={positionLR == 'left'? {margin:10, marginLeft:10} : {margin: 10, marginLeft: 10}} active={activeTab == t.id}/>
             </a>
@@ -96,7 +100,7 @@ export const MapLibreSidebar = ({sbRef, map, position, autopan, tabs}: MapLibreS
       </ul>
       <ul>
         {tabs.filter(f=>f.position=='bottom').map(t => {
-          return <li key={t.id} className={`${activeTab == t.id ? 'active' : ''} ${t.disabled ? 'disabled' : ''}`} title={typeof t.title == 'string'? t.title: ''}>
+          return <li key={t.id} className={clsx(`${activeTab == t.id ? 'active' : ''} ${t.disabled ? 'disabled' : ''}`, t.tabClassName)} title={typeof t.title == 'string'? t.title: ''}>
             <a className="" href={`#${t.id}`} role="tab" onClick={openTab}>
               <Icon name={t.icon} size={20} style={positionLR == 'left'? {margin:10, marginLeft:10} : {margin: 10, marginLeft: 10}} active={activeTab == t.id}/>
             </a>

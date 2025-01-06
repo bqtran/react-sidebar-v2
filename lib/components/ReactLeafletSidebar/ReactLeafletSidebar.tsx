@@ -2,18 +2,22 @@ import 'sidebar-v2/css/leaflet-sidebar.css'
 import React, {useState, useEffect, RefObject} from "react";
 import L from "leaflet";
 import {useMap} from "react-leaflet";
+import {clsx} from "clsx";
 import Icon from "../Icon";
 import {TabType} from "../../main.ts";
 import './ReactLeafletSidebar.css'
 
 export interface ReactLeafletSidebarOptions {
   sbRef: RefObject<HTMLDivElement>;
+  className?: string;
+  tabsClassName?: string;
+  contentsClassName?: string;
   position: "topleft" | "topright";
   autopan: boolean;
   tabs: TabType[];
 }
 
-export const ReactLeafletSidebar = ({sbRef, position, autopan, tabs}: ReactLeafletSidebarOptions) => {
+export const ReactLeafletSidebar = ({sbRef, className, tabsClassName, contentsClassName, position, autopan, tabs}: ReactLeafletSidebarOptions) => {
   const [activeTab, setActiveTab] = useState<string>('');
   const [collapsed, setCollapsed] = useState(true);
   const positionClass = position == "topright" ? 'leaflet-top leaflet-right' : 'leaflet-top leaflet-left';
@@ -71,10 +75,10 @@ export const ReactLeafletSidebar = ({sbRef, position, autopan, tabs}: ReactLeafl
     }
   }, [sbRef])
 
-  return <div ref={sbRef} className={`sidebar leaflet-control sidebar-${positionLR} leaflet-touch ${collapsed ? 'collapsed': ''}`}>
-    <div className="sidebar-content bg-slate-100">
+  return <div ref={sbRef} className={clsx(`sidebar leaflet-control sidebar-${positionLR} leaflet-touch ${collapsed ? 'collapsed': ''}`, className)}>
+    <div className={clsx("sidebar-content bg-slate-100", contentsClassName)}>
       {tabs.map(t => {
-        return <div key={t.id} id={t.id} className={`sidebar-pane ${activeTab == t.id ? 'active' : ''}`}>
+        return <div key={t.id} id={t.id} className={clsx(`sidebar-pane ${activeTab == t.id ? 'active' : ''}`, t.contentClassName)}>
           <h1 className="sidebar-header">{t.title}</h1>
           {t.content}
           <span className="sidebar-close" onClick={closeTab}>
@@ -84,10 +88,10 @@ export const ReactLeafletSidebar = ({sbRef, position, autopan, tabs}: ReactLeafl
         </div>
       })}
     </div>
-    <div className="sidebar-tabs" role="tablist">
+    <div className={clsx("sidebar-tabs", tabsClassName)} role="tablist">
       <ul className="">
         {tabs.filter(f=>f.position=='top').map(t=> {
-          return <li key={t.id} className={`${activeTab == t.id ? 'active' : ''} ${t.disabled ? 'disabled' : ''}`} title={typeof t.title == 'string'? t.title: ''}>
+          return <li key={t.id} className={clsx(`${activeTab == t.id ? 'active' : ''} ${t.disabled ? 'disabled' : ''}`, t.tabClassName)} title={typeof t.title == 'string'? t.title: ''}>
                    <a className="" href={`#${t.id}`} role="tab" onClick={openTab}>
                      <Icon name={t.icon} size={20} style={positionLR == 'left'? {margin:10, marginLeft:8} : {margin: 10, marginLeft: 12}} active={activeTab == t.id}/>
                    </a>
@@ -96,7 +100,7 @@ export const ReactLeafletSidebar = ({sbRef, position, autopan, tabs}: ReactLeafl
       </ul>
       <ul>
         {tabs.filter(f=>f.position=='bottom').map(t => {
-          return <li key={t.id} className={`${activeTab == t.id ? 'active' : ''} ${t.disabled ? 'disabled' : ''}`} title={typeof t.title == 'string'? t.title: ''}>
+          return <li key={t.id} className={clsx(`${activeTab == t.id ? 'active' : ''} ${t.disabled ? 'disabled' : ''}`, t.tabClassName)} title={typeof t.title == 'string'? t.title: ''}>
                    <a className="" href={`#${t.id}`} role="tab" onClick={openTab}>
                      <Icon name={t.icon} size={20} style={positionLR == 'left'? {margin:10, marginLeft:8} : {margin: 10, marginLeft: 12}} active={activeTab == t.id}/>
                    </a>
