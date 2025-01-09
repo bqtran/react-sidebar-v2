@@ -36,6 +36,7 @@ export default defineConfig({
           ),
           // 2. The absolute path to the entry file
           // lib/nested/foo.ts becomes /project/lib/nested/foo.ts
+          // @ts-ignore import.meta intellisene error - module is ES2020
           fileURLToPath(new URL(file, import.meta.url))
         ])
       ),

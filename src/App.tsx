@@ -3,7 +3,6 @@ import LeafletMap from './LeafletMap'
 import MapLibre from './MapLibre'
 import Index from './Index'
 
-import './App.css'
 function App() {
 
   return <Routes>

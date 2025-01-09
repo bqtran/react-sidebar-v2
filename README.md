@@ -4,16 +4,20 @@
 ![NPM Version](https://img.shields.io/npm/v/%40bqtran%2Freact-sidebar-v2?style=flat-square)
 ![GitHub Release Date](https://img.shields.io/github/release-date/bqtran/react-sidebar-v2?style=flat-square)
 
+![Sidebar Screenshot](public/react-sidebar-v2.webp)
+
 This is a React friendly port of [Turbo87's sidebar-v2](https://github.com/Turbo87/sidebar-v2) map control for React-Leaflet & MapLibre GL JS.
 
 A big shoutout to Andreas Riedmüller for creating the [my-component-library](https://github.com/receter/my-component-library/tree/revision-1) scaffolding that this project leverages.
 You can read his excellent overview article [here](https://dev.to/receter/how-to-create-a-react-component-library-using-vites-library-mode-4lma).
+
+> NOTE: These components are in a pre-release stage, so the API will change drastically as it is being refined.
+
 ## Features
 - Recreates all the original sidebar-v2 functionality (markup, events) in React (leverages the original CSS only)
 - Includes the nifty map autopan functionality found in [Norwin's leaflet-sidebar-v2](https://github.com/noerw/leaflet-sidebar-v2).
 - Includes both components for [React-Leaflet](https://react-leaflet.js.org/) and [MapLibre GL JS](https://maplibre.org/) libraries.
 - Native [Lucide Icons](https://lucide.dev/) Integration
-- Tailwind CSS Styling
 - TypeScript declarations
 ### React-Leaflet Example
 ```javascript
@@ -24,9 +28,8 @@ import {useRef} from "react";
 
 export default function LeafletMap() {
   const sbRef = useRef<HTMLDivElement>(null);
-  return <div className="flex h-screen w-screen">
-    <div className="flex-1">
-      <MapContainer center={[29.648, -95.579]} zoom={13} scrollWheelZoom={false} zoomControl={false}>
+  return <div style={{flex:"1 1 auto", height:"100vh", width:"100vw"}} >
+      <MapContainer center={[29.648, -95.579]} zoom={13} scrollWheelZoom={false} zoomControl={false} style={{height:"100vh", width:"100vw"}}>
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -50,7 +53,6 @@ export default function LeafletMap() {
           }
         ]}/>
       </MapContainer>
-    </div>
   </div>
 }
 
@@ -65,7 +67,7 @@ import "maplibre-gl/dist/maplibre-gl.css"
 import {useEffect, useState, useRef} from "react"
 
 export default function MapLibre() {
-  const [map, setMap] = useState<maplibre.Map>();
+  const [map, setMap] = useState<maplibre.Map|undefined>(undefined);
   const sbRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -78,29 +80,27 @@ export default function MapLibre() {
     }
   }, []);
 
-  return  <div className="flex h-screen w-screen">
-            <div className="flex-1">
-              <div id="map" style={{width: "100%", height: "100%"}}/>
-              {map && <MapLibreSidebar sbRef={sbRef} map={map} position="top-left" autopan={false} tabs={[
-                  {
-                    id: "menu",
-                    title: "Menu",
-                    icon: "Menu",
-                    position: "top",
-                    disabled: false,
-                    content: <p>Menu Content</p>
-                  },
-                  {
-                    id: "settings",
-                    title: "Settings",
-                    icon: "Settings",
-                    position: "bottom",
-                    disabled: false,
-                    content: <p>Settings Content</p>
-                  }
-                ]} />
-              }
-            </div>
+  return  <div style={{flex: "1 1 auto", height: "100vh", width: "100vw"}}>
+            <div id="map" style={{height: "100vh", width: "100vw"}}/>
+            {map && <MapLibreSidebar sbRef={sbRef} map={map} position="top-left" autopan={false} tabs={[
+                {
+                  id: "menu",
+                  title: "Menu",
+                  icon: "Menu",
+                  position: "top",
+                  disabled: false,
+                  content: <p>Menu Content</p>
+                },
+                {
+                  id: "settings",
+                  title: "Settings",
+                  icon: "Settings",
+                  position: "bottom",
+                  disabled: false,
+                  content: <p>Settings Content</p>
+                }
+              ]} />
+            }
           </div>
 }
 
@@ -133,8 +133,6 @@ Note: The `Map` component needs to exist before it can be passed to `MapLibreSid
 
 ## Attributions
 [Lucide](https://lucide.dev/) - [ISC License](https://lucide.dev/license)
-
-[Tailwind CSS](https://tailwindcss.com/) - [MIT License](https://github.com/tailwindlabs/tailwindcss/blob/next/LICENSE)
 
 [React-Leaflet](https://react-leaflet.js.org/) - [Hippocratic License](https://github.com/PaulLeCam/react-leaflet/blob/master/LICENSE.md)
 
