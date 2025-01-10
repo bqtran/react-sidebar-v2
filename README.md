@@ -17,7 +17,7 @@ You can read his excellent overview article [here](https://dev.to/receter/how-to
 - Recreates all the original sidebar-v2 functionality (markup, events) in React (leverages the original CSS only)
 - Includes the nifty map autopan functionality found in [Norwin's leaflet-sidebar-v2](https://github.com/noerw/leaflet-sidebar-v2).
 - Includes both components for [React-Leaflet](https://react-leaflet.js.org/) and [MapLibre GL JS](https://maplibre.org/) libraries.
-- Sidebar Context Provider for state manipulation from other React components 
+- Sidebar Context Provider for state manipulation from other React components
 - Native [Lucide Icons](https://lucide.dev/) Integration
 - TypeScript declarations
 
@@ -129,7 +129,7 @@ export default function MapLibre() {
 3. The sidebar should now be showing up on your map of choice.
 
 ## Advanced Usage
-A Sidebar Context is provided to expose the Sidebar's API to other React components for state information and manipulation. 
+A Sidebar Context is provided to expose the Sidebar's API to other React components for state information and manipulation.
 You can use this to dynamically style the Sidebar according to the current state. Below is an example that applies/removes
 round corners to the sidebar depending on if a tab is expanded or collapsed:
 
@@ -178,7 +178,7 @@ export default function LeafletMap() {
 
 ### [SidebarContext] Context Provider Consumables
 - `innerRef`: _React.Ref_ - Reference to Sidebar
-- `activeTab/setActiveTab`: _String/React.SetStateAction_ - get/set current active tab id
+- `activeTab/setActiveTab`: _String/React.SetStateAction_ - get/set current active tab ID
 - `collapsed/setCollapsed`: _Boolean/React.SetStateAction_ - get/set Sidebar's expanded/collapsed state
 - `position/setPosition`: _String/React.SetStateAction_ - get/set Sidebar control's orientation on map
 - `type`: _String_ - get current Sidebar's configured type
