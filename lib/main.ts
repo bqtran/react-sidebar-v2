@@ -12,5 +12,8 @@ export type TabType = {
   content?: ReactNode;
 }
 
+export {SidebarProvider, SidebarContext} from './context/SidebarContext'
+export type {SidebarContextType} from './@types/sidebar'
+export type {SidebarProviderType} from './context/SidebarContext'
 export {ReactLeafletSidebar} from './components/ReactLeafletSidebar/ReactLeafletSidebar'
 export {MapLibreSidebar} from './components/MapLibreSidebar/MapLibreSidebar'
