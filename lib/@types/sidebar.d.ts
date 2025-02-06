@@ -1,4 +1,5 @@
 import {Dispatch, SetStateAction} from "react";
+import {TabType} from "../main.ts";
 
 export type SidebarContextType = {
   innerRef: RefObject<HTMLDivElement>;
@@ -9,5 +10,9 @@ export type SidebarContextType = {
   position: 'left'|'right',
   setPosition: Dispatch<SetStateAction<'left'|'right'>>;
   positionClass: string;
+  getPanWidth: () => number;
+  sidebarTabs: TabType[];
+  setSidebarTabs: Dispatch<SetStateAction<TabType[]>>;
+  toggleTab: (string) => boolean;
   type: string;
 }

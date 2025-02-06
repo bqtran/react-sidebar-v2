@@ -148,7 +148,7 @@ export default function LeafletMap() {
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               />
-              <ReactLeafletSidebar autopan={false} position="left" tabsClassName={`${collapsed ? 'rounded-lg':'rounded-l-lg'}`} contentsClassName="rounded-r-lg" tabs={[
+              <ReactLeafletSidebar autopan={true} position="left" tabsClassName={`${collapsed ? 'rounded-lg':'rounded-l-lg'}`} contentsClassName="rounded-r-lg" tabs={[
                 {
                   id: "menu",
                   title:"Menu",
@@ -181,6 +181,8 @@ export default function LeafletMap() {
 - `activeTab/setActiveTab`: _String/React.SetStateAction_ - get/set current active tab ID
 - `collapsed/setCollapsed`: _Boolean/React.SetStateAction_ - get/set Sidebar's expanded/collapsed state
 - `position/setPosition`: _String/React.SetStateAction_ - get/set Sidebar control's orientation on map
+- `sidebarTabs/setSidebarTabs`: _TabType[]/React.SetStateAction_ - get/set Sidebar tabs
+- `toggleTab`: _String_ - enable/disable tab by id
 - `type`: _String_ - get current Sidebar's configured type
 
 ### [ReactLeafletSidebar / MapLibreSidebar] Component Properties
