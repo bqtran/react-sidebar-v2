@@ -37,6 +37,9 @@ jobs:
       pull-requests: write
       id-token: write
     steps:
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
       - uses: nearform-actions/optic-release-automation-action@v4
         with:
           commit-message: ${{ github.event.inputs.commit-message }}
