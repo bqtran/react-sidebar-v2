@@ -182,7 +182,7 @@ export default function LeafletMap() {
 - `collapsed/setCollapsed`: _Boolean/React.SetStateAction_ - get/set Sidebar's expanded/collapsed state
 - `position/setPosition`: _String/React.SetStateAction_ - get/set Sidebar control's orientation on map
 - `sidebarTabs/setSidebarTabs`: _TabType[]/React.SetStateAction_ - get/set Sidebar tabs
-- `toggleTab`: _String_ - enable/disable tab by id
+- `toggleTab`: _String_ - enable/disable tab by ID
 - `type`: _String_ - get current Sidebar's configured type
 
 ### [ReactLeafletSidebar / MapLibreSidebar] Component Properties
