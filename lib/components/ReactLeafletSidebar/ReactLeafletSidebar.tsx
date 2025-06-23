@@ -1,5 +1,5 @@
 import 'sidebar-v2/css/leaflet-sidebar.css'
-import React, {useEffect, useContext} from "react";
+import React, {useContext} from "react";
 import L from "leaflet";
 import {clsx} from "clsx";
 import Icon from "../Icon";
@@ -19,8 +19,9 @@ export interface ReactLeafletSidebarOptions {
 }
 
 export const ReactLeafletSidebar = ({className, tabsClassName, contentsClassName, position, autopan, tabs}: ReactLeafletSidebarOptions) => {
-  const {activeTab, setActiveTab, collapsed, setCollapsed, setPosition, positionClass, innerRef, getPanWidth, sidebarTabs, setSidebarTabs} = useContext(SidebarContext) as SidebarContextType;
+  const {activeTab, setActiveTab, collapsed, setCollapsed, positionClass, innerRef, getPanWidth, sidebarTabsRef} = useContext(SidebarContext) as SidebarContextType;
   const map = useMap();
+  sidebarTabsRef.current = tabs;
 
   const panMap = (enable:boolean) => {
     if(enable && map != undefined && innerRef.current != null)
@@ -35,7 +36,7 @@ export const ReactLeafletSidebar = ({className, tabsClassName, contentsClassName
 
   const openTab = (ev: React.MouseEvent<HTMLAnchorElement>) => {
     const tab = ev.currentTarget.hash.slice(1);
-    if(map != undefined && sidebarTabs.filter(f=> (!f.disabled && f.id == tab)).length) {
+    if(map != undefined && sidebarTabsRef.current && sidebarTabsRef.current.filter((f: TabType) => (!f.disabled && f.id == tab)).length) {
       if(activeTab == tab) {
         map.fire("closing", {id: tab});
         closeTab();
@@ -51,32 +52,18 @@ export const ReactLeafletSidebar = ({className, tabsClassName, contentsClassName
   }
 
   //append to leaflet control container
-  useEffect(() => {
-    if(innerRef.current !== null) {
-      const div = document.getElementsByClassName(positionClass)[0];
-      div.append(innerRef.current);
-    }
-  }, [positionClass]);
+  if(innerRef.current !== null && positionClass !== null) {
+    const div = document.getElementsByClassName(positionClass)[0];
+    div.append(innerRef.current);
 
-  //prevent click/scroll propagation from sidebar to map
-  useEffect(() => {
-    if (innerRef.current !== null) {
-      L.DomEvent.disableClickPropagation(innerRef.current);
-      L.DomEvent.disableScrollPropagation(innerRef.current);
-    }
-  }, [innerRef]);
-
-  useEffect(()=> {
-    setSidebarTabs(tabs);
-  }, [tabs]);
-
-  useEffect(() => {
-    setPosition(position);
-  }, [position]);
+    //prevent click/scroll propagation from sidebar to map
+    L.DomEvent.disableClickPropagation(innerRef.current);
+    L.DomEvent.disableScrollPropagation(innerRef.current);
+  }
 
   return <div ref={innerRef} className={clsx(`sidebar leaflet-control sidebar-${position} leaflet-touch ${collapsed ? 'collapsed': ''}`, className)}>
     <div className={clsx("sidebar-content", contentsClassName)}>
-      {sidebarTabs.map(t => {
+      {sidebarTabsRef.current && sidebarTabsRef.current.map((t: TabType) => {
         return <div key={t.id} id={t.id} className={clsx(`sidebar-pane ${activeTab == t.id ? 'active' : ''}`, t.contentClassName)}>
           <h1 className="sidebar-header">{t.title}</h1>
           {t.content}
@@ -89,7 +76,7 @@ export const ReactLeafletSidebar = ({className, tabsClassName, contentsClassName
     </div>
     <div className={clsx("sidebar-tabs", tabsClassName)} role="tablist">
       <ul>
-        {sidebarTabs.filter(f=>f.position=='top').map(t=> {
+        {sidebarTabsRef.current && sidebarTabsRef.current.filter((f: TabType) => f.position=='top').map((t: TabType)=> {
           return <li key={t.id} className={clsx(`${activeTab == t.id ? 'active' : ''} ${t.disabled ? 'disabled' : ''}`, t.tabClassName)} title={typeof t.title == 'string'? t.title: ''}>
                    <a href={`#${t.id}`} role="tab" onClick={openTab}>
                      <Icon name={t.icon} size={20} style={position == 'left'? {margin:10, marginLeft:8} : {margin: 10, marginLeft: 12}} active={activeTab == t.id}/>
@@ -98,7 +85,7 @@ export const ReactLeafletSidebar = ({className, tabsClassName, contentsClassName
         })}
       </ul>
       <ul>
-        {sidebarTabs.filter(f=>f.position=='bottom').map(t => {
+        {sidebarTabsRef.current && sidebarTabsRef.current.filter((f: TabType) => f.position=='bottom').map((t: TabType) => {
           return <li key={t.id} className={clsx(`${activeTab == t.id ? 'active' : ''} ${t.disabled ? 'disabled' : ''}`, t.tabClassName)} title={typeof t.title == 'string'? t.title: ''}>
                    <a href={`#${t.id}`} role="tab" onClick={openTab}>
                      <Icon name={t.icon} size={20} style={position == 'left'? {margin:10, marginLeft:8} : {margin: 10, marginLeft: 12}} active={activeTab == t.id}/>

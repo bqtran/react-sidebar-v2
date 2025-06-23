@@ -1,7 +1,7 @@
 import 'sidebar-v2/css/leaflet-sidebar.css'
 import {Map} from "maplibre-gl";
 import {TabType} from "../../main.ts";
-import React, {useEffect, useContext} from "react";
+import React, {useContext} from "react";
 import {clsx} from "clsx";
 import Icon from "../Icon";
 import './MapLibreSidebar.css'
@@ -19,8 +19,9 @@ export interface MapLibreSidebarOptions {
 }
 
 export const MapLibreSidebar = ({className, tabsClassName, contentsClassName, map, position, autopan, tabs}: MapLibreSidebarOptions) => {
-  const {activeTab, setActiveTab, collapsed, setCollapsed, setPosition, positionClass, innerRef, getPanWidth, sidebarTabs, setSidebarTabs} = useContext(SidebarContext) as SidebarContextType;
-
+  const {activeTab, setActiveTab, collapsed, setCollapsed, positionClass, innerRef, getPanWidth, sidebarTabsRef} = useContext(SidebarContext) as SidebarContextType;
+  sidebarTabsRef.current = tabs;
+  
   const panMap = (enable:boolean) => {
     if(enable && map !== undefined && innerRef.current != null)
       map.panBy([getPanWidth(), 0], {duration: 500});
@@ -34,7 +35,7 @@ export const MapLibreSidebar = ({className, tabsClassName, contentsClassName, ma
 
   const openTab = (ev: React.MouseEvent<HTMLAnchorElement>) => {
     const tab = ev.currentTarget.hash.slice(1);
-    if(map != undefined && sidebarTabs.filter(f=> (!f.disabled && f.id == tab)).length) {
+    if(map != undefined && sidebarTabsRef.current && sidebarTabsRef.current.filter((f: TabType) => (!f.disabled && f.id == tab)).length) {
       if(activeTab == tab) {
         map.fire("closing", {id: tab});
         closeTab();
@@ -50,25 +51,15 @@ export const MapLibreSidebar = ({className, tabsClassName, contentsClassName, ma
   }
 
   //append to maplibre control container
-  useEffect(() => {
-    if(innerRef.current !== null) {
-      const div = document.getElementsByClassName(positionClass)[0] as HTMLElement;
-      div.style.zIndex = '3'; //bugfix for maplibre control race condition affecting responsiveness
-      div.append(innerRef.current);
-    }
-  }, [positionClass]);
-
-  useEffect(()=> {
-    setSidebarTabs(tabs);
-  }, [tabs]);
-
-  useEffect(() => {
-    setPosition(position);
-  }, [position]);
+  if(innerRef.current !== null && positionClass !== null) {
+    const div = document.getElementsByClassName(positionClass)[0] as HTMLElement;
+    div.style.zIndex = '3'; //bugfix for maplibre control race condition affecting responsiveness
+    div.append(innerRef.current);
+  }
 
   return <div ref={innerRef} className={clsx(`sidebar sidebar-${position} ${collapsed ? 'collapsed': ''}`, className)}>
     <div className={clsx("sidebar-content", contentsClassName)}>
-      {sidebarTabs.map(t => {
+      {sidebarTabsRef.current && sidebarTabsRef.current.map((t: TabType) => {
         return <div key={t.id} id={t.id} className={clsx(`sidebar-pane ${activeTab == t.id ? 'active' : ''}`, t.contentClassName)}>
           <h1 className="sidebar-header">{t.title}</h1>
           {t.content}
@@ -81,7 +72,7 @@ export const MapLibreSidebar = ({className, tabsClassName, contentsClassName, ma
     </div>
     <div className={clsx("sidebar-tabs", tabsClassName)} role="tablist">
       <ul>
-        {sidebarTabs.filter(f=>f.position=='top').map(t=> {
+        {sidebarTabsRef.current && sidebarTabsRef.current.filter((f: TabType) => f.position=='top').map((t: TabType) => {
           return <li key={t.id} className={clsx(`${activeTab == t.id ? 'active' : ''} ${t.disabled ? 'disabled' : ''}`, t.tabClassName)} title={typeof t.title == 'string'? t.title: ''}>
             <a href={`#${t.id}`} role="tab" onClick={openTab}>
               <Icon name={t.icon} size={20} style={position == 'left'? {margin:10, marginLeft:10} : {margin: 10, marginLeft: 10}} active={activeTab == t.id}/>
@@ -90,7 +81,7 @@ export const MapLibreSidebar = ({className, tabsClassName, contentsClassName, ma
         })}
       </ul>
       <ul>
-        {sidebarTabs.filter(f=>f.position=='bottom').map(t => {
+        {sidebarTabsRef.current && sidebarTabsRef.current.filter((f: TabType) => f.position=='bottom').map((t: TabType) => {
           return <li key={t.id} className={clsx(`${activeTab == t.id ? 'active' : ''} ${t.disabled ? 'disabled' : ''}`, t.tabClassName)} title={typeof t.title == 'string'? t.title: ''}>
             <a href={`#${t.id}`} role="tab" onClick={openTab}>
               <Icon name={t.icon} size={20} style={position == 'left'? {margin:10, marginLeft:10} : {margin: 10, marginLeft: 10}} active={activeTab == t.id}/>

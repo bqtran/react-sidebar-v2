@@ -7,12 +7,10 @@ export type SidebarContextType = {
   setActiveTab: Dispatch<SetStateAction<string>>;
   collapsed: boolean;
   setCollapsed: Dispatch<SetStateAction<boolean>>;
-  position: 'left'|'right',
-  setPosition: Dispatch<SetStateAction<'left'|'right'>>;
+  positionRef: RefObject<'left'|'right'>,
   positionClass: string;
   getPanWidth: () => number;
-  sidebarTabs: TabType[];
-  setSidebarTabs: Dispatch<SetStateAction<TabType[]>>;
+  sidebarTabsRef: RefObject<TabType[]>;
   toggleTab: (string) => boolean;
   type: string;
 }

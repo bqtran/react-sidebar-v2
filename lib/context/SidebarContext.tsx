@@ -11,18 +11,23 @@ export type SidebarProviderType = {
 
 export const SidebarProvider: FC<SidebarProviderType> = ({type, children }) => {
   const innerRef = useRef<HTMLDivElement>(null);
-  const [sidebarTabs, setSidebarTabs] = useState<TabType[]>([]);
+  const sidebarTabsRef = useRef<TabType[]>([]);
   const [activeTab, setActiveTab] = useState<string>('');
   const [collapsed, setCollapsed] = useState(true);
-  const [position, setPosition] = useState<'left'|'right'>('left');
-  const positionClass = type == 'maplibre' ? position == "right" ? 'maplibregl-ctrl-top-right' : 'maplibregl-ctrl-top-left'
-                                                  : position == "right" ? 'leaflet-top leaflet-right' : 'leaflet-top leaflet-left';
+  const positionRef = useRef<'left'|'right'>('left');
+  const positionClass = type == 'maplibre' 
+                      ? positionRef.current == "right" 
+                        ? 'maplibregl-ctrl-top-right' 
+                        : 'maplibregl-ctrl-top-left'
+                      : positionRef.current == "right" 
+                        ? 'leaflet-top leaflet-right' 
+                        : 'leaflet-top leaflet-left';
 
   const getPanWidth = () => {
     if(innerRef.current != null) {
       let panWidth = Number.parseInt(window.getComputedStyle(innerRef.current).getPropertyValue("max-width")) / 2;
       if(!isNaN(panWidth)) {
-        if (position == "left" && collapsed || position == "right" && !collapsed) panWidth *= -1;
+        if (positionRef.current == "left" && collapsed || positionRef.current == "right" && !collapsed) panWidth *= -1;
         return panWidth;
       }
     }
@@ -30,13 +35,15 @@ export const SidebarProvider: FC<SidebarProviderType> = ({type, children }) => {
   }
 
   const toggleTab = (name:string) => {
-    const tab = sidebarTabs.find(f => f.id === name);
-    if(tab !== undefined) {
-      tab.disabled = !tab.disabled;
-      return true;
+    if(sidebarTabsRef.current) {
+      const tab = sidebarTabsRef.current.find(f => f.id === name);
+      if(tab !== undefined) {
+        tab.disabled = !tab.disabled;
+        return true;
+      }
     }
     return false;
   }
 
-  return <SidebarContext.Provider value={{innerRef, activeTab, setActiveTab, collapsed, setCollapsed, position, setPosition, positionClass, getPanWidth, sidebarTabs, setSidebarTabs, toggleTab, type}}>{children}</SidebarContext.Provider>;
+  return <SidebarContext.Provider value={{innerRef, activeTab, setActiveTab, collapsed, setCollapsed, positionRef, positionClass, getPanWidth, sidebarTabsRef, toggleTab, type}}>{children}</SidebarContext.Provider>; 
 }
