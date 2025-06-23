@@ -27,6 +27,10 @@ export default tseslint.config(
         'warn',
         { allowConstantExport: true }
       ]
+    },
+    parserOptions: {
+      project: true,
+      tsconfigRootDir: __dirname
     }
   }
 )
